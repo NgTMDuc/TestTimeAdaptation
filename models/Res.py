@@ -244,7 +244,7 @@ class ResNet(nn.Module):
         sF = self.maxpool(sF)
         
         if layer == 0:
-            feature = self.transform.transform(cF, sF)
+            feature = self.transform(cF, sF)
             feature = self.layer1(feature)
             feature = self.layer2(feature)
             feature = self.layer3(feature)
@@ -257,7 +257,7 @@ class ResNet(nn.Module):
         if layer == 1:
             cF = self.layer1(cF)
             sF = self.layer1(sF)            
-            feature = self.transform.transform(cF, sF)
+            feature = self.transform(cF, sF)
             feature = self.layer2(feature)
             feature = self.layer3(feature)
             feature = self.layer4(feature)
@@ -271,7 +271,7 @@ class ResNet(nn.Module):
             cF = self.layer2(cF)
             sF = self.layer1(sF)
             sF = self.layer2(sF)            
-            feature = self.transform.transform(cF, sF)
+            feature = self.transform(cF, sF)
             feature = self.layer3(feature)
             feature = self.layer4(feature)
             feature = self.avgpool(feature)
@@ -288,7 +288,7 @@ class ResNet(nn.Module):
             sF = self.layer2(sF)
             sF = self.layer3(sF)            
             
-            feature = self.transform.transform(cF, sF)
+            feature = self.transform(cF, sF)
             feature = self.layer4(feature)
             feature = self.avgpool(feature)
             feature = feature.reshape(feature.size(0), -1)
@@ -306,7 +306,7 @@ class ResNet(nn.Module):
             sF = self.layer3(sF)            
             sF = self.layer4(sF)
             
-            feature = self.transform.transform(cF, sF)
+            feature = self.transform(cF, sF)
             # feature = self.layer4(feature)
             feature = self.avgpool(feature)
             feature = feature.reshape(feature.size(0), -1)

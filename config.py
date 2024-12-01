@@ -69,7 +69,7 @@ def get_args():
 
     #Propose method
     parser.add_argument("--layer", type = int, default=1)
-    parser.add_argument("--transform", type = str, default="WCT")
+    parser.add_argument("--transform", type = str, default="AdaIN")
     parser.add_argument("--coral", type = bool, default = False)
     parser.add_argument("--alpha", type = float, default = 0.5)
     return parser.parse_args()

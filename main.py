@@ -48,7 +48,7 @@ import models.Res as Resnet
 import pickle
 from dataset.waterbirds_dataset import WaterbirdsDataset
 from dataset.ColoredMNIST_dataset import ColoredMNIST
-from dataset.cifar10_dataset import Cifar10Dataset
+from dataset.cifar_dataset import CIFAR10C
 
 def validate(val_loader, model, args):
     batch_time  = AverageMeter("Time", ":6.3f")
@@ -212,7 +212,7 @@ if __name__ == "__main__":
     args.logger_name = f"{args.method}-{args.model}"
     
     if args.method == "propose":
-        args.logger_name += f"-{args.transform}-{args.layer}-{str(args.coral)}"
+        args.logger_name += f"-{args.transform}-{args.layer}-{str(args.coral)}-{args.alpha}"
     
     args.logger_name += ".txt"
     
@@ -284,7 +284,15 @@ if __name__ == "__main__":
                 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=args.test_batch_size, 
                                                              shuffle=args.if_shuffle, **kwargs)
             elif args.dset == "CIFAR-10-C":
-                pass
+                kwargs = {
+                    'num_workers': args.workers, 'pin_memory': True
+                }
+                val_dataset = CIFAR10C(root=args.data_corruption, 
+                                           corruption_type=args.corruption, 
+                                           severity=args.level,
+                                           transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.247, 0.243, 0.261))]))
+                val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=args.test_batch_size,
+                                                             shuffle=args.if_shuffle, **kwargs)
             else:
                 assert False, NotImplementedError
         else:
